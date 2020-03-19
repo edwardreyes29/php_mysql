@@ -1,0 +1,26 @@
+
+I. Using MySQL
+    MySQL: Very identical to MySQL
+        INSERT INTO users VALUES('Smith', 'John', 'jsmith@mysite.com');
+
+        SELECT surname,firstname FROM users WHERE email='jsmith@mysite.com';
+
+    (!) With PHP, you can make these calls directly to MySQL  without having 
+    to access MySQL command-line interface.
+
+        - You can save results in array for processing and perform multiple lookups.
+
+II. Using JavaScript
+    w/ html
+        * provides dynamic user interaction
+            - checking email address validity in input forms
+            - displaying prompts.
+            - dynammic control over eleemnts in HTML
+    w/ css
+        * helps create dynamic web pages 
+            - changing fonts when in a new page.
+        
+    Used for asynchronous communication:
+        - process of accessing the web server in the background.
+            - No need to be reloaded to display new content.
+        - Asynchronous call can update a single element on a webpage.

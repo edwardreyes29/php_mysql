@@ -1,0 +1,223 @@
+Ch 3: Intro to PHP
+
+
+I. Incorporating PHP within HTML
+    * Used to make the server generate dynamic output.
+    * Responsible for returning a clean file for display in a web browser.
+
+    index.html -> index.PHP
+
+    tags:   <?php 
+                ...
+            ?>
+
+    (!) Insert smallest possible fragments of PHP possible, leaving rest to standard HTML.
+
+II. Structure of PHP 
+
+    $:
+        $ -> must place in front of ALL variables.
+            * Required to make PHP parser faster, it will instantly knows whenever it comes across a variable.
+    
+    Arrays:
+        Syntax:
+            array(); // construct
+        Ex.
+            $team = array('Bill', 'Mary', 'Mike', 'Chris', 'Anne');
+
+            // Show player 4
+            echo $team[3]; // Displays the name Chris.
+
+    Two-dimensional Arrays:
+
+        $oxo = array(array('x','o','x'),
+                     array('o','o','x'),
+                     array('x','o','x'));
+
+        echo $oxo[1][2]; // 'x'
+
+    Naming Rules:
+        * case sensitive
+        * use underscore
+            $user_name
+
+    Operators:
+        Assignment Operators: 
+            .= ---> $j = $j . $k // assuming this is concatenation.
+
+        Logical Operators:
+            && - AND
+            and - Low-precedence AND (avoid)
+            || - OR 
+            or - Low-precedence OR (avoid, but lets second statements to execute) 
+            ! - NOT 
+            xor - Exclusive OR // False if both are TRUE or FALSE.
+                Ex. 
+                    $ingredient = $ammonia xor $bleach;
+
+    String concatenation (.):
+        echo "You have " . $msgs . " messages.";
+
+        $firstname .= $lastname;
+
+    String types: (What you use matters)
+        ' ' -> literal stirng preserving exact contents
+            Ex.
+                $info = 'Preface variables with a $ like this: $variable'; 
+            Will display as is.
+        " " -> Includes value of the variable
+
+    Escaping characters:
+        $text = 'My spelling\'s still atroshus';
+
+    Multi-Line Commands:
+        quotes can extend multiple lines.
+
+        echo "Hello there!
+            ...
+            ...
+            
+            - Obi-wan.";
+
+        <<< operator (heredoc):
+        (!) quotes do not need to be escaped.
+        (!) closing _END; must appear right at the start of a new line and must be the only thing on that line.
+        (!) _END can be anything you want, like _SECTION1 or _OUPUT
+        Ex. 
+            // heredoc <<< operator for multi-line sequence
+            // May not contain any characters before or after the semi-colon (not spaces or comments) 
+            $author = "Brian W. Kernighan";
+
+            echo <<<_END
+            Debugging is twice as hard as writing code in the first place. 
+            Therefore, if you write the code as cleverly as possible, you are,
+            by definition, not smart enough to debug it.
+
+            - $author. 
+            _END;
+
+    Variable Typing:
+        PHP is loosley typed language.
+        PHP converts variables to type required by their context.
+
+        Can extract a number from a multi-digit one by assuming it to be a string.
+
+        Ex. 
+            // Variable Typing:
+            echo "<br>";
+            $number = 12345 * 67890;
+            echo substr($number, 3, 1); // ask for 1 character to be returned at the fourth position. 
+            echo "<br>";
+            echo substr($number, 2, 5); // ask for 2 characters staring at the third position
+
+        A string can be converted into a number as well.
+        $pi = "3.1415927";
+        $radius = 5;
+        echo $pi * ($radius *  $radius);
+
+    Constants:
+        Can only be defined using 'define' funciton.
+        NO $ preceding it. 
+
+        Ex.
+            define("ROOT_LOCATION", "/usr/local/www/");
+
+        To read the contents, refer it like a regular variable:
+        
+        Ex. $directory = ROOT_LOCATION // no $ needed.
+
+III. Difference between Echo and Print
+
+    echo is a PHP construct.
+        - faster 
+        - cannot be used in more complex expressions
+
+    print is function-like construct.
+        - returns 1 and accepts a single parameter
+        - can be used in complex fashion.
+            Ex. 
+                $b ? print "TRUE" : print "FALSE";
+
+    (!) For most purposes, use 'echo'
+
+IV. Functions
+
+    <?php   
+        function longdate($timestamp)
+        {
+            return date("l F jS Y", $timestamp);
+        }
+    ?>
+
+V. Variable Scope
+
+    (!) longdate function CANNOT access $temp. It wasn't create within longdate function 
+        or passed to it.
+        <?php
+            $temp = "The date is ";
+            echo longdate(time());
+
+            function longdate($timestamp)
+            {
+                return $temp . date("l F jS Y", $timestamp);
+            }
+        ?>
+
+    Variables created within functions are local to that function.
+    (!) Variables created outside of any functions can be accessed only to non-function code.
+
+        // You need to pass the variable to the function if you want to use it within the function.
+        <?php
+            $temp = "The date is ";
+            echo longdate($temp, time());
+
+            function longdate($text, $timestamp)
+            {
+                return $temp . date("l F jS Y", $timestamp);
+            }
+        ?>
+
+    >>> Global variables 
+
+        use keyword 'global'
+
+        Ex. global $is_logged_in;
+        // 1 for successful login, 0 upon failure (application purposes)
+        
+        Now every line of code can access this variable.
+
+    >>> Static variables
+        For variables inside of a function that you don't want any other functions to have access to
+        but also want to keep it's content. Local variables are wiped out after the function ends.
+
+        use 'static' keyword 
+
+        <?php
+            function test()
+            {
+                static $count = 0;
+                echo $count;
+                $count++;
+            }
+
+        ?>
+
+        (!) Only predetermined values can be assigned.
+        static $int = 0; // allowed 
+        static $int = 1 + 2 // not allowed 
+        static $int = sqrt(144); // not allowed
+    
+    >>> Superglobal variables. (Ch 6)
+        Can be accessed everywhere.
+
+        - Contain useful information about currently running programs and its environment.
+
+        $came_from = $_SERVER['HTTP_REFERER'];
+
+        Security:
+        $came_from = htmlentities($_SERVER['HTTP_REFERER']);
+
+        Sanitizes  superglobals before using them. htmlentities function converts 
+        ALL characters into HTML entities. < & > are converted into string &lt; and &gt;
+        This renders them harmless as are all quotes and backslashes.
+
