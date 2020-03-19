@@ -1,0 +1,107 @@
+I. Expressions
+    combination of things that results in a value.
+
+    y = 3(|2x| + 4)
+
+    $y = 3 * (abs(2 * $x) + 4);
+
+    TRUE = 1
+    FALSE = not 0, but is defined as NULL
+
+II. Literals and Variables
+
+
+III. Operators.
+
+    *New: 
+        Bitwise: Manipulate bits within bits    
+            Ex. 12 ^ 9
+
+        Execution: Execute contents of backticks
+            Ex. `ls -al`
+
+    
+    Ternary operator:
+        expr ? x : y;
+
+IV. Associativity
+
+    * Some operators require processing from right to left.
+    Examples of this would be negation, pre-increment, post-decrement,
+    type casting (int), (double), (float), (real), (array), (object),
+    @ -> inhibit error reporting, and assignment operators.
+
+    $level = $score = $time = 0; // all right associativity, the rightmost part is evaluated first.
+
+V. Logical Operators:
+
+    OR will not evaluated the second operand if the first is true.
+    <?php
+        if ($finished == 1 OR getnext() == 1) exit;
+    ?>
+    
+    If you need getnext to be called at each if statement, invoke it and store its value in a variable 
+    before executing the if statement.
+    <?php
+        $gn = getnext();
+
+        if($finished == 1 OR $gn == 1) exit;
+    ?>
+
+VI. Conditionals 
+
+    if condition can be any valid PHP expression.
+
+VII. Switch
+    Same like every other language.
+    Alternate switch:
+
+        switch(variable):
+            ..
+            ..
+        endswitch;
+
+VIII. Looping 
+
+    <?php
+        $fuel = 10;
+
+        while($fuel > 1)
+        {
+            // keep driving
+            echo "There's enough fuel";
+            fuel -= 0.1;
+        }
+
+        echo "Fill tank now";
+    ?>
+
+    <?php
+        $count = 0;
+
+        while(++$count < 12)
+            echo "$count times 12 is " . $count * 12 . "<br.";
+    ?>
+
+    >>> do...while 
+
+    do {
+        ...
+    } while (conditional);
+
+    >>> for loops 
+    for ($count = 1; $count <= 12; ++$count) 
+        echo "$count times 12 is " . $count * 12 . "<br>";
+
+    (!) can use break to 'break' command to break out of a loop
+        'continue' skips to the next loop iteration.
+
+        for($j = 0; $j < number; ++$j) 
+        {
+            ...
+            if ($j == FALSE) break;
+        }
+
+IX. PHP Dynamic Linking
+
+    WordPress is PHP driven. Each main section has its own PHP file.
