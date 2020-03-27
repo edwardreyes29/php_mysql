@@ -105,3 +105,17 @@ VIII. Looping
 IX. PHP Dynamic Linking
 
     WordPress is PHP driven. Each main section has its own PHP file.
+
+    String Functons:
+        strrev()
+        str_repeat()
+        strtoupper()
+
+A. Define a function
+
+    function function_name([parameter [, ...]])
+    {
+        // Statements
+    }
+
+    ucfirst function sets the first character of a string to uppercase.

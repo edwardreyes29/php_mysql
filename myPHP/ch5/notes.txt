@@ -1,0 +1,31 @@
+Ch5 PHP Functions and Objects
+
+I. PHP Functions
+
+    date function:
+        echo date("l"); // Display the day of the week
+
+A. Pass by reference
+
+    // passing by reference mean changes will modify the variables values that are being passed.
+        function fix_names(&$n1, &$n2, &$n3)
+        {
+            $n1 = ucfirst(strtolower($n1));
+            $n2 = ucfirst(strtolower($n2));
+            $n3 = ucfirst(strtolower($n3));
+        }
+II. Return Global Variables 
+
+    // Declare global access, these variables will retain global access.
+    function fix_names()
+    {
+        global $a1; $a1 = ucfirst(strtolower($a1));
+        global $a2; $a2 = ucfirst(strtolower($a2));
+        global $a3; $a3 = ucfirst(strtolower($a3));
+    }
+
+III. Including and Requiring Files
+
+    For when you create library functions or use other created library functions.
+
+    just use 'include_once' or actually 'require_once' instead.
