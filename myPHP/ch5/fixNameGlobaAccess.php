@@ -8,7 +8,7 @@
     echo $a1 . " " . $a2 . " " . $a3;
 
 
-    // passing by reference mean changes will modify the variables values that are being passed.
+    // Declare global access, these variables will retain global access.
     function fix_names()
     {
         global $a1; $a1 = ucfirst(strtolower($a1));
