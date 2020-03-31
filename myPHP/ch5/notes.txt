@@ -29,3 +29,105 @@ III. Including and Requiring Files
     For when you create library functions or use other created library functions.
 
     just use 'include_once' or actually 'require_once' instead.
+
+IV. Classes and Objects
+
+    class MyClass 
+    {
+        public $prop1, $prop2,... $propN;
+
+        function function1()
+        {
+            ...
+        }
+    }
+
+    Create new object:
+        $object = new MyClass();
+
+    Access property and call function:
+        $object->prop1;
+        $object->function1();
+
+        NOTE: properties and methods do not have $ signs.
+
+A. Cloning Objects
+
+    Assigning one object to another only passes the reference of that object.
+    To avoid this, use clone operator that creates a new instance of the class
+    and copies the property values from the original instance to the new instance.
+
+    $object1 = new User();
+    $object1->name = "Alice";
+    
+    // Clone the object
+    $object2 = clone $object1;
+    $object2->name = "Amy";
+
+B. Constructors
+
+    class User
+    {
+        function __construct($param1, $param2)
+        {
+            // Construct statement go here
+            public $username = "Guest";
+        }
+    }
+
+C. Destructors
+
+    Useful when code has made last refernce to an object or when script reaches end.
+
+    Destructor does clean up such as releasinga connection to a database or some other 
+    resouce that you reserved within the class.
+    Resources stcik around in classes infeinitely.
+
+    class User
+    {
+        function __destruct()
+        {
+            // Destructor code goes here
+        }
+    }
+
+D. Writing methods
+    Reserved methods start with double underscore (__)
+
+    $this, used to access the current object's properties.
+
+    class User
+    {
+        public $name, $password;
+
+        function get_password()
+        {
+            return $this->password;
+        }
+    }
+
+E. Declaring properties
+    Not necessary to explicitly declary propteries: AVOID DOING THIS!!!
+
+    $object1 = new User();
+    $object1->name = "Alice";
+
+    class User {};
+
+    (!) assignments must be constants, cannot be result of a function/expression.
+
+D. Static methods and properties
+    Static methods useful if you want to perform actions relating to the class itself.
+
+    Static properties are useful for things like keeping track of how many users
+    there are, but keeping count of how many user instances have been created.
+
+    static makes them accessible wthout an instantiation of the class and cannot
+    be accessed by instances of the class, but a static method can.
+
+E. Inheritance
+
+    PHP will not  automatically call constructor method of parents class.
+    Subclasses should always call the parent constructors.
+
+    
