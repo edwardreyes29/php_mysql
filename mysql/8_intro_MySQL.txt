@@ -1,0 +1,214 @@
+
+I. MySQL Basics
+
+    SQL:
+        SELECT title FROM publications WHERE author = 'Charles Dickens';
+
+    Database contains one or more tables, which contains rows or records.
+    Within each row are columns or fields that contain the data itself.
+
+II. Using Command-Line interface
+
+    A. To cancel a command:
+        type \c and press Return.
+
+        e.g meaningliness gibberish to mysql \c 
+
+        NOTE: \c after ; will not cancle the preceding command, as it 
+        is a new statement.
+
+    B. MySQL commands:
+        ALTER               - Alter database or table
+        BACKUP              - Back up a table
+        \c                  - Cancel input
+        CREATE              - Create a database
+        DELETE              - Delete a row from a table
+        DESCRIBE            - Describe a table's column
+        DROP                - Delete a database or table
+        EXIT (Ctrl-C)       - Exit
+        GRANT               - Change user priviliges
+        HELP(\h,\?)         - Display help
+        INSERT              - Insert data
+        LOCK                - Lock table(s)
+        QUIT (\q)           - Same as EXIT
+        RENAME              - Rename a table
+        SHOW                - List details about an object
+        SOURCE              - Execute a file 
+        STATUS (\s)         - Display current status 
+        TRUNCATE            - Empty a table 
+        UNLOCK              - Unlock table(s)
+        UPDATE              - Update an existing record
+        USE                 - Use a database 
+
+        SQL commands and keywords are case-insensitive. 
+        CREATE, create, and CrEaTe all mean the same thing
+
+        Table names are case-sensitive on Linux & macOS.
+
+    C. Creating a database 
+
+        Create a new database called publications:
+
+            CREATE DATABASE publications;
+
+        In order to use database, USE command:
+
+            USE publications;
+
+        To create user, issue GRANT command:
+
+            GRANT PRIVILEGES ON database.object TO 'username'@'hostname'
+                IDENTIFIED BY 'password';
+
+            Parameters for GRANT command:
+                *.*             // All databases and all their objects
+                database.*      // Only the database called database and all its objects
+                database.object // Only the database and its object called object.
+
+
+            Ex. create a user who can access publications database and all its
+                objects.
+
+                GRANT ALL ON publications.* TO 'edward'@'localhost'
+                    IDENTIFIED BY 'mypasswd';
+
+                IDENTIFIED BY grants a password to the user.
+
+    D. Creating a table 
+
+        Create a table called classics:
+
+            CREATE TABLE classics (
+                author VARCHAR(128),
+                title VARCHAR(128),
+                type VARCHAR(16),
+                year VARCHAR(4)
+            ) ENGINE InnoDB;
+
+        ENGINE InnoDB -> InnoDB is the default storage engine for MySQL.
+        Use it here because it supports FULLTEXT searches. If up-to-date, 
+        you can ommit this.
+
+        To check if table has been created:
+
+            mysql> DESCRIBE classics;
+
+            +--------+--------------+------+-----+---------+-------+
+            | Field  | Type         | Null | Key | Default | Extra |
+            +--------+--------------+------+-----+---------+-------+
+            | author | varchar(128) | YES  |     | NULL    |       |
+            | title  | varchar(128) | YES  |     | NULL    |       |
+            | type   | varchar(16)  | YES  |     | NULL    |       |
+            | year   | varchar(4)   | YES  |     | NULL    |       |
+            +--------+--------------+------+-----+---------+-------+
+
+        Change datatype of a column:
+            mysql> ALTER TABLE tablename MODIFY columnname INTEGER;
+
+        CHAR(4): Allows 4 bytes of data, supporting years from -999 to 9999;
+        1 byte = 8 bits
+        11111111 & 00000000, which are 0 to 255 in decimal.
+
+
+        YEARS data type only supports years 0000 and 1901 through 2155
+            MySQL stores every single byte for efficiency, but only 256 years
+            are available. 
+
+        
+II. Data Types
+
+    A. CHAR data type 
+
+        CHAR(n)     n <= 255        CHAR(5) "Hello" uses 5 bytes
+                                    CHAR(57) "Goodbye" uses 57 bytes 
+
+        VARCHAR(n)  n <= 65535      VARCHAR(7) "Hello" uses 5 bytes
+                                    VARCHAR(100) "Goodbye" uses 7 bytes
+
+    B. BINARY data type
+        Store strings of bytes that do not have an associated character set.
+        
+        E.g. might use a BINARY data type to stroe a GIF.
+
+
+    C. TEXT data types 
+        Only indexes first n characters of a TEXT column, you specify n.
+        VARCHAR is bette and faster datatype to use if you need to search
+        the entire contents of a file. If not, use TEXT. 
+
+        No default values
+
+        TINYTEXT(n)
+        TEXT(n)
+        MEDIUMTEXT(n)
+        LONGTEXT(n)
+
+    D. BLOB data types
+        Usefule for binary data in excess of 65,536 bytes in size.
+
+        No default values.
+
+        TINYBLOB(n)
+        BLOB(n)
+        MEDIUMBLOB(n)
+        LONGBLOB(n)
+
+    E. Numeric data types
+
+        Signed number is one with possible range from minus value, through 0,
+        to a positive one.
+
+        unsigned number has value ranging from 0 to a positive one.
+
+        TINYINT
+        SMALLINT
+        MEDIUMINT
+        INT/INTEGER
+        BIGINT 
+        FLOAT
+        DOUBLE/REAL
+
+        To specify whetehr data type is unsiged, use UNSIGNED qualifier.
+
+        e.g. Create a table called tablename with field in it called fieldname
+        of datatype UNSIGNED INTEGER:
+
+            CREATE TABLE tablename (fieldname INT UNSIGNED);
+
+            or pass a parameter (optional)
+
+            CREATE TABLE tablename (fieldname INT(4) ZEROFILL);
+
+                Doesn't specify number of butes of storage to use. 
+                ZEROFILL cause any numbers with a width of less than four
+                characters to be padded with one or more zeros.
+    
+    F. DATE and TIME types
+
+        DATETIME        '0000-00-99 00:00:00'
+        DATE            '0000-00-00'
+        TIMESTAMP       '0000-00-00 00:00:00'
+        TIME            '00:00:00' (narrow rane from 1970 to 2037, but will specify value for you if you)
+        YEARS           '0000 (Only years 0000 and 1901-2155)
+
+    G. AUTO_INCREMENT attribute
+
+        Will set value of its contents to that of teh column entry
+        in the previously inserted row, plus 1.
+
+        mysql> ALTER TABLE classics ADD id INT UNSIGNED NOT NULL AUTO_INCREMENT KEY;
+
+        ALTER: Operates on existing table.
+               Can add, chang, or delete columns.
+
+        INT UNSIGNED: Makes column large enough to store more than  billion records.
+
+        NOT NULL: Ensures every column has a value.
+
+        AUTO_INCREMENT: Causes MySQL to set a unique value for this column in every row.
+
+        KEY: Auto-increment column is useful as a key, will be explained.
+
+        (!) To remove a column (id)
+
+            ALTER TABLE classics DROP id;
